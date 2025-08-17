@@ -16,17 +16,20 @@ namespace Connections.Infrastructure.Auth
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
         private readonly JwtTokenFactory _jwtFactory;
+        private readonly IEmailSender _emailSender;
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ApplicationDbContext db,
-            JwtTokenFactory jwtFactory)
+            JwtTokenFactory jwtFactory,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
             _jwtFactory = jwtFactory;
+            _emailSender = emailSender;
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request, string ipAddress, CancellationToken ct = default)
@@ -45,7 +48,22 @@ namespace Connections.Infrastructure.Auth
             }
 
             await _userManager.AddToRoleAsync(user, request.Role);
-            return await GenerateTokensAsync(user, ipAddress, ct);
+            //return await GenerateTokensAsync(user, ipAddress, ct);
+
+            // ✅ Generate OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+            user.OtpCode = otp;
+            user.OtpExpiry = DateTime.UtcNow.AddMinutes(10); // OTP valid for 10 min
+
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync(ct);
+
+            // TODO: Send OTP via Email
+            await _emailSender.SendEmailAsync(user.Email, "Verify your email",
+                $"Your OTP is: {otp}");
+
+            // Return null for now, ask user to verify OTP
+            return null;
         }
 
         public async Task<AuthResponse> LoginAsync(LoginRequest request, string ipAddress, CancellationToken ct = default)
@@ -163,6 +181,41 @@ namespace Connections.Infrastructure.Auth
             var tokens = _db.RefreshTokens.Where(r => r.UserId == user.Id);
             _db.RefreshTokens.RemoveRange(tokens);
             await _db.SaveChangesAsync(ct);
+        }
+
+        public async Task<AuthResponse> VerifyOtpAsync(string email, string otp, string ipAddress, CancellationToken ct = default)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                throw new InvalidOperationException("User not found.");
+
+            if (user.OtpCode != otp || user.OtpExpiry < DateTime.UtcNow)
+                throw new InvalidOperationException("Invalid or expired OTP.");
+
+            // ✅ Clear OTP after successful verification
+            user.OtpCode = null;
+            user.OtpExpiry = null;
+            await _db.SaveChangesAsync(ct);
+
+            // ✅ Generate JWT tokens
+            return await GenerateTokensAsync(user, ipAddress, ct);
+        }
+
+        public async Task DeleteRoleAsync(string roleName, CancellationToken ct = default)
+        {
+            // Find the role
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"Role '{roleName}' not found");
+            }
+
+            // Delete role
+            var result = await _roleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException(string.Join(";", result.Errors.Select(e => e.Description)));
+            }
         }
 
     }

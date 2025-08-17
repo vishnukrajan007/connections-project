@@ -1,5 +1,6 @@
 using Connections.Abstractions.Services;
 using Connections.Infrastructure.Auth;
+using Connections.Infrastructure.Email;
 using Connections.Infrastructure.Identity;
 using Connections.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection("Jwt"));

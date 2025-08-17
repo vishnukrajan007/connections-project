@@ -10,5 +10,7 @@ namespace Connections.Infrastructure.Identity
     public class ApplicationUser : IdentityUser
     {
         public string? FullName { get; set; }
+        public string? OtpCode { get; set; }      // store OTP
+        public DateTime? OtpExpiry { get; set; }  // store expiry time
     }
 }

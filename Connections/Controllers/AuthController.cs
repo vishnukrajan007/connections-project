@@ -51,5 +51,19 @@ namespace Connections.Controllers
             await _authService.DeleteUserAsync(userId, ct);
             return NoContent(); // 204 if success
         }
+
+        [HttpPost("verify-otp")]
+        public async Task<ActionResult<AuthResponse>> VerifyOtp(string email, string otp, CancellationToken ct)
+        {
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            return await _authService.VerifyOtpAsync(email, otp, ip, ct);
+        }
+
+        [HttpDelete("role/{roleName}")]
+        public async Task<IActionResult> DeleteRole(string roleName, CancellationToken ct)
+        {
+            await _authService.DeleteRoleAsync(roleName, ct);
+            return NoContent(); // 204
+        }
     }
 }
