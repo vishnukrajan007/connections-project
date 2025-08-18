@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connection Technology</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f9fafc;
+            color: #333;
+        }
+
+        header {
+            background: #0052cc;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 2.5rem;
+            }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+            }
+
+            .card img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+            }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+            .card-content h2 {
+                margin: 0 0 0.5rem;
+                font-size: 1.25rem;
+                color: #0052cc;
+            }
+
+            .card-content p {
+                margin: 0;
+                font-size: 0.95rem;
+                line-height: 1.4rem;
+            }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f1f3f6;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Think AI Technology</h1>
+        <p>Innovative solutions to connect people, investments, and opportunities</p>
+    </header>
+
+    <section class="products">
+        <div class="card">
+            <img src="/images/connections.jpg" alt="Connections App">
+            <div class="card-content">
+                <h2>Connections App</h2>
+                <p>An intuitive app that helps you connect with people seamlessly and build stronger networks.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="/images/stocky.jpg" alt="StockY">
+            <div class="card-content">
+                <h2>StockY</h2>
+                <p>Track the right stocks at the right time with smart insights and market analysis tools.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="/images/investo.jpg" alt="Investo">
+            <div class="card-content">
+                <h2>Investo</h2>
+                <p>Discover and invest in promising businesses with confidence through our secure platform.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="/images/booking.jpg" alt="Booking">
+            <div class="card-content">
+                <h2>Booking</h2>
+                <p>A simple booking app that helps you schedule and manage your reservations with ease.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Connection Technology. All rights reserved.
+    </footer>
+</body>
+</html>
