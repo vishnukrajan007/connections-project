@@ -482,3 +482,10 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# In .gitignore
+appsettings.Development.json
+appsettings.Local.json
+*.user
+/Connections/appsettings.json
+/Common.bak
