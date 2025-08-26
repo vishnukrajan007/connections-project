@@ -26,6 +26,6 @@ spec:
             - name: ConnectionStrings__Default
               valueFrom:
                 secretKeyRef:
-                  name: connections-secret  # from sec.yml
+                  name: mysecretname  # from sec.yml
                   key: connectionString
 
