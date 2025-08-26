@@ -14,7 +14,7 @@ spec:
       labels:
         app: connections
     spec:
-      serviceAccountName: connections-sa  # This comes from cluster/sa.yml
+      serviceAccountName: connections-service  # This comes from cluster/sa.yml
       containers:
         - name: connections
           image: vishnukrajan007/connections-app:latest
