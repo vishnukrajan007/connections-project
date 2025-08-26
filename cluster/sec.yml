@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Secret
-type: kubernetes.io/service-account-token
 metadata:
   name: mysecretname
-  annotations:
-    kubernetes.io/service-account.name: jenkins
-
+  namespace: webapps   # make sure to add this if your deployment is in 'webapps' namespace
+type: Opaque
+data:
+  connectionString: eW91ci1jb25uZWN0aW9uLXN0cmluZw==
