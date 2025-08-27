@@ -19,7 +19,7 @@ spec:
         - name: connections
           image: vishnukrajan007/connections-app:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
